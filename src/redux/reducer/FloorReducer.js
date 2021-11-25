@@ -27,6 +27,7 @@ const FloorReducer = (state = initialState, action) => {
       return {
         ...state,
         floor: [],
+        messageFloor: "",
       };
     default:
       return state;

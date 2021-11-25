@@ -27,6 +27,7 @@ const BuildingReducer = (state = initialState, action) => {
       return {
         ...state,
         building: [],
+        messageBuilding: "",
       };
     default:
       return state;

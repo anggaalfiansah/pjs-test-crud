@@ -27,6 +27,7 @@ const ProjectReducer = (state = initialState, action) => {
       return {
         ...state,
         project: [],
+        messageProject: "",
       };
     default:
       return state;

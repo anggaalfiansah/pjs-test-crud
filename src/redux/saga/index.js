@@ -5,6 +5,7 @@ import buildingSaga from "./buildingSaga";
 import floorSaga from "./floorSaga";
 import postSaga from "./postDataSaga";
 import locationSaga from "./locationSaga";
+import detailLocationSaga from "./detailLocationSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
     floorSaga(),
     postSaga(),
     locationSaga(),
+    detailLocationSaga()
   ]);
 }

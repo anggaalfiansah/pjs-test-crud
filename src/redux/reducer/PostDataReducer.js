@@ -2,7 +2,7 @@ const initialState = {
   loadingPost: false,
   messagePost: "",
   dataPost: null,
-  initialPost:true
+  initialPost: true,
 };
 
 const PostDataReducer = (state = initialState, action) => {
@@ -11,7 +11,7 @@ const PostDataReducer = (state = initialState, action) => {
       return {
         ...state,
         loadingPost: true,
-        initialPost:false
+        initialPost: false,
       };
     case "REQUEST_TAMBAH_DATA_SUCCESS":
       return {
@@ -33,13 +33,23 @@ const PostDataReducer = (state = initialState, action) => {
       return {
         ...state,
         loadingPost: true,
+        initialPost: false,
       };
-    case "REQUEST_EDIT_DATA_RESPONSE":
+    case "REQUEST_EDIT_DATA_SUCCESS":
       return {
         ...state,
         loadingPost: false,
+        dataPost: action.data,
         messagePost: action.message,
-        statusPost: action.status,
+        statusPost: true,
+      };
+    case "REQUEST_EDIT_DATA_FAIL":
+      return {
+        ...state,
+        loadingPost: false,
+        dataPost: null,
+        messagePost: action.message,
+        statusPost: false,
       };
     case "CLEAR_POST_DATA":
       return {
@@ -47,7 +57,7 @@ const PostDataReducer = (state = initialState, action) => {
         loadingPost: false,
         messagePost: "",
         dataPost: null,
-        initialPost:true
+        initialPost: true,
       };
     default:
       return state;

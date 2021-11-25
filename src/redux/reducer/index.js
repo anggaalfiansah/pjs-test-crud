@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import BuildingReducer from "./BuildingReducer";
+import DetailLocationReducer from "./DetailLocationReducer";
 import FloorReducer from "./FloorReducer";
 import LocationReducer from "./LocationReducer";
 import PostDataReducer from "./PostDataReducer";
@@ -13,4 +14,5 @@ export default combineReducers({
   floorReducer: FloorReducer,
   locationReducer: LocationReducer,
   postDataReducer: PostDataReducer,
+  detailLocationReducer: DetailLocationReducer,
 });

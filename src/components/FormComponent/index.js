@@ -13,12 +13,13 @@ import {
 } from "../../redux/action";
 import {
   clearPostData,
+  requestEditData,
   requestTambahData,
 } from "../../redux/action/postDataAction";
 import InputComponent from "../InputComponent";
 import SelectComponent from "../SelectComponent";
 
-const MenuComponent = () => {
+const MenuComponent = ({ setModal, edit }) => {
   // STATE
   const [tipe, setTipe] = useState();
   const [projek, setProjek] = useState();
@@ -91,14 +92,56 @@ const MenuComponent = () => {
   const handlerTambahData = () => {
     dispatch(requestTambahData(data));
   };
+  const HandlerEdit = () => {
+    dispatch(requestEditData(data, edit?.locID));
+  };
   const handleModalClose = () => {
     setModalResponse(false);
     dispatch(clearPostData());
+    setModal(false);
   };
 
   // LIFECYCLE
   useEffect(() => {
     dispatch(requestTypeLocation());
+    switch (edit?.locType) {
+      case "PR":
+        setTipe({ label: "Project", value: "PR" });
+        setNama(edit.locName);
+        setLongitude(edit.locLongitude);
+        setLatitude(edit.locLatitude);
+        setDispensasi(edit.locDispensation);
+        break;
+      case "BD":
+        setTipe({ label: "Building", value: "BD" });
+        setProjek(edit.project);
+        setNama(edit.locName);
+        setLongitude(edit.locLongitude);
+        setLatitude(edit.locLatitude);
+        setDispensasi(edit.locDispensation);
+        break;
+      case "FL":
+        setTipe({ label: "Floor", value: "FL" });
+        setProjek(edit.project);
+        setGedung(edit.building);
+        setNama(edit.locName);
+        setLongitude(edit.locLongitude);
+        setLatitude(edit.locLatitude);
+        setDispensasi(edit.locDispensation);
+        break;
+      case "RO":
+        setTipe({ label: "Room", value: "RO" });
+        setProjek(edit.project);
+        setGedung(edit.building);
+        setLantai(edit.floor);
+        setNama(edit.locName);
+        setLongitude(edit.locLongitude);
+        setLatitude(edit.locLatitude);
+        setDispensasi(edit.locDispensation);
+        break;
+      default:
+        break;
+    }
   }, []);
   useEffect(() => {
     dispatch(requestProject());
@@ -112,42 +155,51 @@ const MenuComponent = () => {
   useEffect(() => {
     switch (tipe?.value) {
       case "PR":
-        if (nama && longitude && latitude && dispensasi) {
+        if (nama && longitude >= 0 && latitude >= 0 && dispensasi >= 0) {
           setData({
             locName: nama,
-            locType: "PR",
+            locType: tipe.value,
             locLatitude: longitude,
             locLongitude: latitude,
             locDispensation: dispensasi,
+            locID: edit?.locID,
           });
         } else {
           setData();
         }
         break;
       case "BD":
-        if (projek && nama && longitude && latitude && dispensasi) {
+        if (projek && longitude >= 0 && latitude >= 0 && dispensasi >= 0) {
           setData({
             locName: nama,
-            locType: "BD",
+            locType: tipe.value,
             projectCode: projek.locCode,
             locLatitude: longitude,
             locLongitude: latitude,
             locDispensation: dispensasi,
+            locID: edit?.locID,
           });
         } else {
           setData();
         }
         break;
       case "FL":
-        if (projek && gedung && nama && longitude && latitude && dispensasi) {
+        if (
+          projek &&
+          gedung &&
+          longitude >= 0 &&
+          latitude >= 0 &&
+          dispensasi >= 0
+        ) {
           setData({
             locName: nama,
-            locType: "FL",
+            locType: tipe.value,
             projectCode: projek?.locCode,
             buildingCode: gedung?.locCode,
             locLatitude: longitude,
             locLongitude: latitude,
             locDispensation: dispensasi,
+            locID: edit?.locID,
           });
         } else {
           setData();
@@ -159,19 +211,20 @@ const MenuComponent = () => {
           gedung &&
           lantai &&
           nama &&
-          longitude &&
-          latitude &&
-          dispensasi
+          longitude >= 0 &&
+          latitude >= 0 &&
+          dispensasi >= 0
         ) {
           setData({
             locName: nama,
-            locType: "RO",
+            locType: tipe.value,
             projectCode: projek?.locCode,
             buildingCode: gedung?.locCode,
             floorCode: lantai?.locCode,
             locLatitude: longitude,
             locLongitude: latitude,
             locDispensation: dispensasi,
+            locID: edit?.locID,
           });
         } else {
           setData();
@@ -203,6 +256,7 @@ const MenuComponent = () => {
         name="Tipe Lokasi"
         setValue={(data) => handleTipe(data)}
         value={tipe}
+        edit={edit ? true : false}
       />
       {tipe?.value !== "PR" && (
         <SelectComponent
@@ -261,13 +315,15 @@ const MenuComponent = () => {
       />
       <Stack direction="row" spacing={2}>
         <Button
-          onClick={handlerTambahData}
+          onClick={!edit ? handlerTambahData : HandlerEdit}
           disabled={!data}
           variant="contained"
         >
-          Simpan
+          {!edit ? "Simpan" : "Edit"}
         </Button>
-        <Button variant="outlined">Batal</Button>
+        <Button onClick={() => setModal(false)} variant="outlined">
+          Batal
+        </Button>
       </Stack>
       <Modal open={modalResponse} onClose={handleModalClose}>
         {dataPost ? (

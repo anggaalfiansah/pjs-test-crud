@@ -66,14 +66,14 @@ export const getAllLocation = async () => {
   }
 };
 
-export const getLocationByLocCode = async (locCode) => {
+export const getDetailLocationById = async (locId) => {
   try {
     const config = {
       method: "get",
-      url: base_url + "/api/locations/" + locCode,
+      url: base_url + "/api/locations/" + locId,
     };
-    const project = await axios(config);
-    return project.data;
+    const detailLocation = await axios(config);
+    return detailLocation.data;
   } catch (error) {
     return error;
   }
@@ -87,8 +87,21 @@ export const postTambahData = async (data) => {
       data: data,
     };
     const tambah = await axios(config);
-    console.log(tambah.data)
     return tambah.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const editData = async (data, locId) => {
+  try {
+    const config = {
+      method: "put",
+      url: base_url + "/api/locations/" + locId,
+      data: data,
+    };
+    const edit = await axios(config);
+    return edit.data;
   } catch (error) {
     return error;
   }

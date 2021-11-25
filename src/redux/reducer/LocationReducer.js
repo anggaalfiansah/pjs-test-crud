@@ -27,6 +27,7 @@ const LocationReducer = (state = initialState, action) => {
       return {
         ...state,
         location: [],
+        messageLocation: "",
       };
     default:
       return state;

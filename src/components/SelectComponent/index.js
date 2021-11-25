@@ -4,43 +4,51 @@ import React from "react";
 
 const SelectComponent = ({ listData, name, setValue, value, disabled }) => {
   const handleChange = (event) => {
-    switch (name) {
-      case "Tipe Lokasi":
-        setValue(event.target.value);
-        break;
-      case "Projek":
-        setValue(event.target.value);
-        break;
-      case "Gedung":
-        setValue(event.target.value);
-        break;
-      case "Lantai":
-        setValue(event.target.value);
-        break;
-      default:
-        break;
-    }
+    setValue(JSON.parse(event.target.value));
   };
   return (
     <FormControl fullWidth sx={{ my: 1 }} disabled={disabled}>
       <InputLabel size="small">Pilih {name}</InputLabel>
       <Select
         size="small"
-        value={value?.label}
+        value={`${JSON.stringify(value)}`}
         label={`Pilih ${name}`}
         onChange={handleChange}
+        displayEmpty
       >
         {listData?.length > 0 ? (
           listData.map((item) => {
             switch (name) {
               case "Tipe Lokasi":
-                return <MenuItem value={item}>{item.label}</MenuItem>;
+                return (
+                  <MenuItem value={`${JSON.stringify(item)}`}>
+                    {item.label}
+                  </MenuItem>
+                );
               case "Projek":
-                return <MenuItem value={item}>{item.locName}</MenuItem>;
+                delete item["locActiveLabel"];
+                delete item["locTypeLabel"];
+                return (
+                  <MenuItem value={`${JSON.stringify(item)}`}>
+                    {item.locName}
+                  </MenuItem>
+                );
               case "Gedung":
-                return <MenuItem value={item}>{item.locName}</MenuItem>;
+                delete item["locTypeLabel"];
+                delete item["locActiveLabel"];
+                return (
+                  <MenuItem value={`${JSON.stringify(item)}`}>
+                    {item.locName}
+                  </MenuItem>
+                );
               case "Lantai":
-                return <MenuItem value={item}>{item.locName}</MenuItem>;
+                delete item["locTypeLabel"];
+                delete item["locActiveLabel"];
+                return (
+                  <MenuItem value={`${JSON.stringify(item)}`}>
+                    {item.locName}
+                  </MenuItem>
+                );
               default:
                 break;
             }

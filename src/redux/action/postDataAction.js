@@ -1,8 +1,8 @@
-export const requestTambahData = (locCode) => {
-  return { type: "REQUEST_TAMBAH_DATA", payload: locCode };
+export const requestTambahData = (data) => {
+  return { type: "REQUEST_TAMBAH_DATA", payload: data };
 };
-export const requestEditData = (locCode) => {
-  return { type: "REQUEST_EDIT_DATA", payload: locCode };
+export const requestEditData = (data, locID) => {
+  return { type: "REQUEST_EDIT_DATA", payload: { data, locID } };
 };
 export const clearPostData = () => {
   return { type: "CLEAR_POST_DATA" };
