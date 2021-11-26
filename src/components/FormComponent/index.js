@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Stack, Button, Paper, Alert, AlertTitle, Modal } from "@mui/material";
+import { Stack, Button, Paper, Alert, AlertTitle, Modal, Backdrop, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -37,7 +37,7 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
   const { project } = useSelector((state) => state.projectReducer);
   const { building } = useSelector((state) => state.buildingReducer);
   const { floor } = useSelector((state) => state.floorReducer);
-  const { messagePost, dataPost, initialPost } = useSelector(
+  const { messagePost, dataPost, initialPost, loadingPost } = useSelector(
     (state) => state.postDataReducer
   );
 
@@ -251,12 +251,13 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
   }, [initialPost]);
   return (
     <Paper
-      component="span"
       sx={{
         p: 1,
+        px:5,
+        py:2,
         display: "flex",
         flexDirection: "column",
-        marginHorizontal: "2%",
+        marginHorizontal: "10%",
       }}
     >
       <SelectComponent
@@ -302,6 +303,7 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
         setValue={(value) => setNama(value)}
         disabled={!tipe}
         validation={true}
+        edit={edit && edit?.locName === nama}
       />
       <InputComponent
         value={latitude}
@@ -309,6 +311,7 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
         setValue={(value) => handlerLatitude(value)}
         disabled={!tipe}
         validation={latValidate}
+        edit={edit && edit?.locLatitude === latitude}
       />
       <InputComponent
         value={longitude}
@@ -316,6 +319,7 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
         setValue={(value) => handlerLongitude(value)}
         disabled={!tipe}
         validation={longValidate}
+        edit={edit && edit?.locLongitude === longitude}
       />
       <InputComponent
         value={dispensasi}
@@ -323,7 +327,28 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
         setValue={(value) => handlerDispensasi(value)}
         disabled={!tipe}
         validation={true}
+        edit={edit && edit?.locDispensation === dispensasi}
       />
+      {edit && (
+        <>
+          <InputComponent
+            value={edit?.locUpdatedAt}
+            name="Terakhir Diedit"
+            setValue={(value) => handlerDispensasi(value)}
+            disabled={true}
+            validation={true}
+            edit={true}
+          />
+          <InputComponent
+            value={edit?.locCreatedAt}
+            name="Dibuat Pada"
+            setValue={(value) => handlerDispensasi(value)}
+            disabled={true}
+            validation={true}
+            edit={true}
+          />
+        </>
+      )}
       <Stack direction="row" spacing={2}>
         <Button
           onClick={!edit ? handlerTambahData : HandlerEdit}
@@ -349,6 +374,12 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
           </Alert>
         )}
       </Modal>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingPost}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Paper>
   );
 };

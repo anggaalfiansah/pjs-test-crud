@@ -10,6 +10,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FormComponent from "../../components/FormComponent";
@@ -22,7 +24,7 @@ const MainPage = () => {
   const [dataEdit, setDataEdit] = useState();
   const [modalForms, setModalForms] = useState(false);
   // USESELECTOR
-  const { location } = useSelector((state) => state.locationReducer);
+  const { location, loadingLocation } = useSelector((state) => state.locationReducer);
   const { detailLocation } = useSelector(
     (state) => state.detailLocationReducer
   );
@@ -137,6 +139,13 @@ const MainPage = () => {
           edit={dataEdit}
         />
       </Modal>
+      
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingLocation}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Paper>
   );
 };

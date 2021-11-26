@@ -7,6 +7,7 @@ export const InputComponent = ({
   setValue,
   disabled,
   validation,
+  edit,
 }) => {
   const [label, setLabel] = useState();
   useEffect(() => {
@@ -37,7 +38,11 @@ export const InputComponent = ({
     <FormControl autoWidth sx={{ my: 1 }} disabled={!label}>
       <TextField
         label={
-          label ? `Masukan ${label}` : `Silahkan Pilih Tipe Terlebih Dahulu`
+          !label
+            ? `Silahkan Pilih Tipe Terlebih Dahulu`
+            : edit
+            ? label
+            : `Masukan ${label}`
         }
         size="small"
         onChange={handleChange}
