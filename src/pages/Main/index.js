@@ -14,8 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import FormComponent from "../../components/FormComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { requestLocation } from "../../redux/action";
-import { requestDetailLocation } from "../../redux/action/detailLocationAction";
+import { requestLocation,requestDetailLocation } from "../../redux/action";
 
 const MainPage = () => {
   // STATE
@@ -59,6 +58,9 @@ const MainPage = () => {
   };
   const handlerEdit = (item) => {
     dispatch(requestDetailLocation(item.locID));
+  };
+  const handlerDelete = (item) => {
+    alert("API belum tersedia");
   };
 
   //   LIFECYCLE
@@ -115,7 +117,11 @@ const MainPage = () => {
                   <Button onClick={() => handlerEdit(item)} variant="outlined">
                     Edit
                   </Button>
-                  <Button variant="outlined" color="error">
+                  <Button
+                    onClick={() => handlerDelete()}
+                    variant="outlined"
+                    color="error"
+                  >
                     Delete
                   </Button>
                 </TableCell>
@@ -127,6 +133,7 @@ const MainPage = () => {
       <Modal open={modalForms}>
         <FormComponent
           setModal={(boolean) => setModalForms(boolean)}
+          setEdit={()=>setDataEdit()}
           edit={dataEdit}
         />
       </Modal>

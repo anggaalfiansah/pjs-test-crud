@@ -10,16 +10,15 @@ import {
   clearProject,
   clearBuilding,
   clearFloor,
-} from "../../redux/action";
-import {
+  clearDetailLocation,
   clearPostData,
   requestEditData,
   requestTambahData,
-} from "../../redux/action/postDataAction";
+} from "../../redux/action";
 import InputComponent from "../InputComponent";
 import SelectComponent from "../SelectComponent";
 
-const MenuComponent = ({ setModal, edit }) => {
+const MenuComponent = ({ setModal, edit, setEdit }) => {
   // STATE
   const [tipe, setTipe] = useState();
   const [projek, setProjek] = useState();
@@ -98,9 +97,18 @@ const MenuComponent = ({ setModal, edit }) => {
   const handleModalClose = () => {
     setModalResponse(false);
     dispatch(clearPostData());
+    dispatch(clearDetailLocation());
     setModal(false);
+    setEdit();
+    setTipe();
+    setProjek();
+    setGedung();
+    setLantai();
+    setNama();
+    setLongitude();
+    setLatitude();
+    setDispensasi();
   };
-
   // LIFECYCLE
   useEffect(() => {
     dispatch(requestTypeLocation());
@@ -265,6 +273,7 @@ const MenuComponent = ({ setModal, edit }) => {
           setValue={(data) => handlerProjek(data)}
           value={projek}
           disabled={!tipe}
+          edit={edit ? true : false}
         />
       )}
       {tipe?.value !== "PR" && tipe?.value !== "BD" && (
@@ -274,6 +283,7 @@ const MenuComponent = ({ setModal, edit }) => {
           setValue={(data) => handlerGedung(data)}
           value={gedung}
           disabled={!projek}
+          edit={edit ? true : false}
         />
       )}
       {tipe?.value !== "PR" && tipe?.value !== "BD" && tipe?.value !== "FL" && (
@@ -283,6 +293,7 @@ const MenuComponent = ({ setModal, edit }) => {
           setValue={(data) => handlerLantai(data)}
           value={lantai}
           disabled={!gedung}
+          edit={edit ? true : false}
         />
       )}
       <InputComponent
@@ -321,7 +332,7 @@ const MenuComponent = ({ setModal, edit }) => {
         >
           {!edit ? "Simpan" : "Edit"}
         </Button>
-        <Button onClick={() => setModal(false)} variant="outlined">
+        <Button onClick={handleModalClose} variant="outlined">
           Batal
         </Button>
       </Stack>

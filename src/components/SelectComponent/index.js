@@ -2,7 +2,7 @@
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import React from "react";
 
-const SelectComponent = ({ listData, name, setValue, value, disabled }) => {
+const SelectComponent = ({ listData, name, setValue, value, disabled, edit }) => {
   const handleChange = (event) => {
     setValue(JSON.parse(event.target.value));
   };
@@ -11,7 +11,7 @@ const SelectComponent = ({ listData, name, setValue, value, disabled }) => {
       <InputLabel size="small">Pilih {name}</InputLabel>
       <Select
         size="small"
-        value={`${JSON.stringify(value)}`}
+        value={edit ? `${JSON.stringify(value)}` : value}
         label={`Pilih ${name}`}
         onChange={handleChange}
         displayEmpty
