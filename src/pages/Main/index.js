@@ -12,11 +12,13 @@ import {
   TableRow,
   Backdrop,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FormComponent from "../../components/FormComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { requestLocation,requestDetailLocation } from "../../redux/action";
+import { requestLocation, requestDetailLocation } from "../../redux/action";
+import { Delete, Edit } from "@mui/icons-material";
 
 const MainPage = () => {
   // STATE
@@ -24,7 +26,9 @@ const MainPage = () => {
   const [dataEdit, setDataEdit] = useState();
   const [modalForms, setModalForms] = useState(false);
   // USESELECTOR
-  const { location, loadingLocation } = useSelector((state) => state.locationReducer);
+  const { location, loadingLocation } = useSelector(
+    (state) => state.locationReducer
+  );
   const { detailLocation } = useSelector(
     (state) => state.detailLocationReducer
   );
@@ -58,6 +62,8 @@ const MainPage = () => {
     );
     setData(newData);
   };
+
+  // HANDLER
   const handlerEdit = (item) => {
     dispatch(requestDetailLocation(item.locID));
   };
@@ -88,16 +94,21 @@ const MainPage = () => {
         marginTop: "2%",
       }}
     >
+      {/* section button tambah produk */}
       <Button onClick={() => setModalForms(true)} variant="outlined">
         Tambah
       </Button>
+
+      {/* section tabel data */}
       <TableContainer component={Paper} sx={{ my: 5 }}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               <TableCell>Nama</TableCell>
-              <TableCell align="right">Kode Lokasi</TableCell>
               <TableCell align="right">Tipe Lokasi</TableCell>
+              <TableCell align="right">Kode Lokasi</TableCell>
+              <TableCell align="right">Latitude</TableCell>
+              <TableCell align="right">Longitude</TableCell>
               <TableCell align="center">Aksi</TableCell>
             </TableRow>
           </TableHead>
@@ -110,38 +121,51 @@ const MainPage = () => {
                 <TableCell component="th" scope="row">
                   {item.locName}
                 </TableCell>
-                <TableCell align="right">{item.locCode}</TableCell>
                 <TableCell align="right">{item.label}</TableCell>
+                <TableCell align="right">{item.locCode}</TableCell>
+                <TableCell align="right">
+                  {item.locLatitude?.toFixed(5)}
+                </TableCell>
+                <TableCell align="right">
+                  {item.locLongitude?.toFixed(5)}
+                </TableCell>
                 <TableCell
                   align="center"
                   sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <Button onClick={() => handlerEdit(item)} variant="outlined">
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => handlerDelete()}
-                    variant="outlined"
-                    color="error"
+                  <IconButton
+                  color="primary"
+                    component="span"
+                    onClick={() => handlerEdit(item)}
                   >
-                    Delete
-                  </Button>
+                    <Edit />
+                  </IconButton>
+                  <IconButton
+                    sx={{ color: "red" }}
+                    component="span"
+                    onClick={handlerDelete}
+                  >
+                    <Delete />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* section form */}
       <Modal open={modalForms}>
         <FormComponent
           setModal={(boolean) => setModalForms(boolean)}
-          setEdit={()=>setDataEdit()}
+          setEdit={() => setDataEdit()}
           edit={dataEdit}
         />
       </Modal>
-      
+
+      {/* section loading */}
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loadingLocation}
       >
         <CircularProgress color="inherit" />

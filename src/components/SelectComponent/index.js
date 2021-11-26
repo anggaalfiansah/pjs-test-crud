@@ -2,7 +2,14 @@
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import React from "react";
 
-const SelectComponent = ({ listData, name, setValue, value, disabled, edit }) => {
+const SelectComponent = ({
+  listData,
+  name,
+  setValue,
+  value,
+  disabled,
+  edit,
+}) => {
   const handleChange = (event) => {
     setValue(JSON.parse(event.target.value));
   };
@@ -25,32 +32,14 @@ const SelectComponent = ({ listData, name, setValue, value, disabled, edit }) =>
                     {item.label}
                   </MenuItem>
                 );
-              case "Projek":
-                delete item["locActiveLabel"];
-                delete item["locTypeLabel"];
-                return (
-                  <MenuItem value={`${JSON.stringify(item)}`}>
-                    {item.locName}
-                  </MenuItem>
-                );
-              case "Gedung":
-                delete item["locTypeLabel"];
-                delete item["locActiveLabel"];
-                return (
-                  <MenuItem value={`${JSON.stringify(item)}`}>
-                    {item.locName}
-                  </MenuItem>
-                );
-              case "Lantai":
-                delete item["locTypeLabel"];
-                delete item["locActiveLabel"];
-                return (
-                  <MenuItem value={`${JSON.stringify(item)}`}>
-                    {item.locName}
-                  </MenuItem>
-                );
               default:
-                break;
+                delete item["locActiveLabel"];
+                delete item["locTypeLabel"];
+                return (
+                  <MenuItem value={`${JSON.stringify(item)}`}>
+                    {item.locName}
+                  </MenuItem>
+                );
             }
           })
         ) : (

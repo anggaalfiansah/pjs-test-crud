@@ -349,7 +349,7 @@ const MenuComponent = ({ setModal, edit, setEdit }) => {
           />
         </>
       )}
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} mt={2}>
         <Button
           onClick={!edit ? handlerTambahData : HandlerEdit}
           disabled={!data}
